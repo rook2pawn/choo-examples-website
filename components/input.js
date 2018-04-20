@@ -3,7 +3,8 @@ const html = require('choo/html')
 const format = require("../format");
 const fs = require("fs")
 const snippet = fs.readFileSync("./docs/input.md", "utf8")
-
+const lib = require("../lib");
+const path = require("path")
 
 class InputView extends Nanocomponent {
   constructor() {
@@ -30,7 +31,7 @@ class InputView extends Nanocomponent {
     `
   }
   update(state) {
-    let doUpdate = (state.route == "input")
+    let doUpdate = (state.route == (path.join(lib.getBaseRoute(),"input")))
     return doUpdate
   }
 }

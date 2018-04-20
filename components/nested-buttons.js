@@ -1,6 +1,8 @@
 const Nanocomponent = require('nanocomponent')
 const html = require('choo/html')
 const format = require("../format")
+const lib = require("../lib");
+const path = require("path")
 
 class Button extends Nanocomponent {
   constructor () {
@@ -76,7 +78,7 @@ class ButtonsView extends Nanocomponent {
     </div>`
   }
   update (state) {
-    let doUpdate = (state.route == "buttons")
+    let doUpdate = (state.route == (path.join(lib.getBaseRoute(),"buttons")))
     return doUpdate
   }
   load () {

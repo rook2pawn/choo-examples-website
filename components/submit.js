@@ -3,6 +3,8 @@ const html = require('choo/html')
 const format = require("../format");
 const fs = require("fs")
 const snippet = fs.readFileSync("./docs/submit.md", "utf8")
+const lib = require("../lib");
+const path = require("path")
 
 function confirmStore(state, emitter) {
   state.confirm = {
@@ -83,7 +85,7 @@ class SubmitView extends Nanocomponent {
     </div>`
   }
   update(state) {
-    let doUpdate = (state.route == "submit")
+    let doUpdate = (state.route == (path.join(lib.getBaseRoute(),"submit")))
     return doUpdate
   }
 }

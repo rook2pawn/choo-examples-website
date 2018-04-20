@@ -36,7 +36,7 @@ app.use((state, emitter) => {                  // 1.
   })
 })
 
-app.route(lib.getBase(), view)
+app.route(lib.getBaseRoute(), view)
 app.route(path.join(lib.getBaseRoute(),'buttons'), buttonsView)
 app.route(path.join(lib.getBaseRoute(),'input'), inputView)
 app.route(path.join(lib.getBaseRoute(),'submit'), submitView)
@@ -56,7 +56,7 @@ console.log("Articles are:", articles);
 
 const articleView = function(state,emit) {
   console.log("state route:", state.route)
-  if (state.route == lib.getBaseRoute())
+  if (state.route == "/")
     state.route = path.join(lib.getBaseRoute(), "buttons")
   console.log("after state.route:", state.route)
   return html`<div>${articles[state.route].render(state,emit)}`

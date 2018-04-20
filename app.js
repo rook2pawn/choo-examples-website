@@ -37,9 +37,9 @@ app.use((state, emitter) => {                  // 1.
 })
 
 app.route(lib.getBase(), view)
-app.route(lib.getBase()+'/buttons', buttonsView)
-app.route(lib.getBase()+'/input', inputView)
-app.route(lib.getBase()+'/submit', submitView)
+app.route(path.join(lib.getBaseRoute(),'buttons'), buttonsView)
+app.route(path.join(lib.getBaseRoute(),'input'), inputView)
+app.route(path.join(lib.getBaseRoute(),'submit'), submitView)
 app.mount('body')
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
@@ -48,14 +48,16 @@ const inputComponent = require("./components/input.js")(app)
 const submitComponent = require("./components/submit.js")(app)
 
 const articles = {}
-articles[lib.getBase()+'buttons'] = buttonsComponent;
-articles[lib.getBase()+'input'] = inputComponent;
-articles[lib.getBase() + 'submit'] =  submitComponent;
+articles[lib.getBase()] = buttonsComponent;
+articles[path.join(lib.getBaseRoute(),'buttons')] = buttonsComponent;
+articles[path.join(lib.getBaseRoute(),'input')] = inputComponent;
+articles[path.join(lib.getBaseRoute(),'submit')] =  submitComponent;
+console.log("Articles are:", articles);
 
 const articleView = function(state,emit) {
   console.log("state route:", state.route)
-  if (state.route == lib.getBase())
-    state.route = path.join(lib.getBase(), "buttons")
+  if (state.route == lib.getBaseRoute())
+    state.route = path.join(lib.getBaseRoute(), "buttons")
   console.log("after state.route:", state.route)
   return html`<div>${articles[state.route].render(state,emit)}`
 }

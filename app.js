@@ -1,15 +1,5 @@
 var html = require('choo/html')
-var raw = require('choo/html/raw')
 var choo = require('choo')
-var markdown = require('markdown-it')
-var md = markdown({
-  html: true
-})
-var hljs = require('highlight.js/lib/highlight')
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'))
-const fs = require("fs")
-const foo = fs.readFileSync("./bm.js", "utf8");
-const snippet = fs.readFileSync("./docs/nanocomponent-nested-buttons.md", "utf8")
 const css = require("sheetify")
 
 css("./css/agate.css")
@@ -17,36 +7,14 @@ css("./css/materialize.min.css")
 css("./css/style.css")
 
 const header = require("./components/header");
-
-function highlighter (md, opts) {
-  md.options.highlight = highlight
-  var rules = md.renderer.rules
-  rules.fence = wrap(rules.fence)
-  rules.code_block = wrap(rules.code_block)
-
-  function highlight (code, lang) {
-    var result = null
-    if (lang && hljs.getLanguage(lang)) {
-      result = hljs.highlight(lang, code, true)
-    } else {
-      result = hljs.highlightAuto(code)
-    }
-    return result ? result.value : ''
-  }
-
-  function wrap (render) {
-    return function () {
-      return render.apply(this, arguments)
-        .replace(/<code class="/g, '<code class="hljs ')
-        .replace(/<code>/g, '<code class="hljs">')
-    }
-  }
-}
-md.use(highlighter)
 var app = choo()
-
 app.use((state,emit) => {
+  state.route = "buttons"
   emit.on("DOMContentLoaded", () => {
+  })
+  /*
+  emit.on("DOMContentLoaded", () => {
+    console.log("DOMContentLoaded!")
     if(typeof(Storage) !== "undefined") {
       if (sessionStorage.state) {
           let sessionState = JSON.parse(sessionStorage.state)
@@ -58,20 +26,72 @@ app.use((state,emit) => {
     }
     emit.emit("render")
   })
+  */
+})
+app.use((state, emitter) => {                  // 1.
+  emitter.on('navigate', () => {               // 2.
+    console.log(`Navigated to ${state.route}`) // 3.
+  })
 })
 
-
 app.route('/', view)
+app.route('/buttons', buttonsView)
+app.route('/input', inputView)
+app.route('/submit', submitView)
 app.mount('body')
-
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
+const buttonsComponent = require("./components/nested-buttons.js")(app)
+const inputComponent = require("./components/input.js")(app)
+const submitComponent = require("./components/submit.js")(app)
+
+const articles = {
+  buttons : buttonsComponent,
+  input : inputComponent,
+  submit : submitComponent
+}
+const articleView = function(state,emit) {
+  console.log("state route:", state.route)
+  if (state.route == "/")
+    state.route = "buttons"
+  return html`<div>${articles[state.route].render(state,emit)}`
+}
 function view (state, emit) {
   return html`
     <body>
       <div class="container">
       ${header(state,emit)}
-      ${raw(md.render(snippet))}
+      ${articleView(state,emit)}
+      </div>
+    </body>
+  `
+}
+function buttonsView (state, emit) {
+  return html`
+    <body>
+      <div class="container">
+      ${header(state,emit)}
+      ${articleView(state,emit)}
+      </div>
+    </body>
+  `
+}
+function inputView (state, emit) {
+  return html`
+    <body>
+      <div class="container">
+      ${header(state,emit)}
+      ${articleView(state,emit)}
+      </div>
+    </body>
+  `
+}
+function submitView(state, emit) {
+  return html`
+    <body>
+      <div class="container">
+      ${header(state,emit)}
+      ${articleView(state,emit)}
       </div>
     </body>
   `

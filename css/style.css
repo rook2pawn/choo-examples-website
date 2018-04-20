@@ -1,8 +1,13 @@
 .header {
 	font-family: 'Gaegu', cursive;
 }
-
+.clear {
+	clear:both;
+}
 code {
 	border-radius:20px;
+}
+
+code.hljs {
 	padding:2em;
 }

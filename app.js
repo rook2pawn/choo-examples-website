@@ -1,6 +1,8 @@
 var html = require('choo/html')
 var choo = require('choo')
+const lib = require("./lib");
 const css = require("sheetify")
+const path = require("path")
 
 css("./css/agate.css")
 css("./css/materialize.min.css")
@@ -34,10 +36,10 @@ app.use((state, emitter) => {                  // 1.
   })
 })
 
-app.route('/choo-examples', view)
-app.route('#buttons', buttonsView)
-app.route('#input', inputView)
-app.route('#submit', submitView)
+app.route(lib.getBase(), view)
+app.route(lib.getBase()+'/buttons', buttonsView)
+app.route(lib.getBase()+'/input', inputView)
+app.route(lib.getBase()+'/submit', submitView)
 app.mount('body')
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
@@ -45,15 +47,16 @@ const buttonsComponent = require("./components/nested-buttons.js")(app)
 const inputComponent = require("./components/input.js")(app)
 const submitComponent = require("./components/submit.js")(app)
 
-const articles = {
-  buttons : buttonsComponent,
-  input : inputComponent,
-  submit : submitComponent
-}
+const articles = {}
+articles[lib.getBase()+'buttons'] = buttonsComponent;
+articles[lib.getBase()+'input'] = inputComponent;
+articles[lib.getBase() + 'submit'] =  submitComponent;
+
 const articleView = function(state,emit) {
   console.log("state route:", state.route)
-  if (state.route == "choo-examples")
-    state.route = "buttons"
+  if (state.route == lib.getBase())
+    state.route = path.join(lib.getBase(), "buttons")
+  console.log("after state.route:", state.route)
   return html`<div>${articles[state.route].render(state,emit)}`
 }
 function view (state, emit) {

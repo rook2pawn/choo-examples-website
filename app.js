@@ -34,10 +34,10 @@ app.use((state, emitter) => {                  // 1.
   })
 })
 
-app.route('/', view)
-app.route('/buttons', buttonsView)
-app.route('/input', inputView)
-app.route('/submit', submitView)
+app.route('/choo-examples', view)
+app.route('#buttons', buttonsView)
+app.route('#input', inputView)
+app.route('#submit', submitView)
 app.mount('body')
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
@@ -52,7 +52,7 @@ const articles = {
 }
 const articleView = function(state,emit) {
   console.log("state route:", state.route)
-  if (state.route == "/")
+  if (state.route == "choo-examples")
     state.route = "buttons"
   return html`<div>${articles[state.route].render(state,emit)}`
 }

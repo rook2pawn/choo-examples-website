@@ -8,7 +8,6 @@ css("./css/agate.css")
 css("./css/materialize.min.css")
 css("./css/style.css")
 
-const header = require("./components/header");
 var app = choo()
 app.use((state,emit) => {
   state.route = "buttons"
@@ -40,17 +39,22 @@ app.route(lib.getBaseRoute(), view)
 app.route(path.join(lib.getBaseRoute(),'buttons'), buttonsView)
 app.route(path.join(lib.getBaseRoute(),'input'), inputView)
 app.route(path.join(lib.getBaseRoute(),'submit'), submitView)
+app.route(path.join(lib.getBaseRoute(),'input-with-nanocomponent'), inputWithNanocomponentView)
 app.mount('body')
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
+const header = require("./components/header");
+const footer = require("./components/footer");
 const buttonsComponent = require("./components/nested-buttons.js")(app)
 const inputComponent = require("./components/input.js")(app)
+const inputComponentWithNanocomponent = require("./components/input-with-nanocomponent.js")(app)
 const submitComponent = require("./components/submit.js")(app)
 
 const articles = {}
 articles[lib.getBase()] = buttonsComponent;
 articles[path.join(lib.getBaseRoute(),'buttons')] = buttonsComponent;
 articles[path.join(lib.getBaseRoute(),'input')] = inputComponent;
+articles[path.join(lib.getBaseRoute(),'input-with-nanocomponent')] = inputComponentWithNanocomponent;
 articles[path.join(lib.getBaseRoute(),'submit')] =  submitComponent;
 console.log("Articles are:", articles);
 
@@ -67,6 +71,7 @@ function view (state, emit) {
       <div class="container">
       ${header(state,emit)}
       ${articleView(state,emit)}
+      ${footer(state,emit)}
       </div>
     </body>
   `
@@ -77,6 +82,7 @@ function buttonsView (state, emit) {
       <div class="container">
       ${header(state,emit)}
       ${articleView(state,emit)}
+      ${footer(state,emit)}
       </div>
     </body>
   `
@@ -87,16 +93,30 @@ function inputView (state, emit) {
       <div class="container">
       ${header(state,emit)}
       ${articleView(state,emit)}
+      ${footer(state,emit)}
       </div>
     </body>
   `
 }
+function inputWithNanocomponentView (state, emit) {
+  return html`
+    <body>
+      <div class="container">
+      ${header(state,emit)}
+      ${articleView(state,emit)}
+      ${footer(state,emit)}
+      </div>
+    </body>
+  `
+}
+
 function submitView(state, emit) {
   return html`
     <body>
       <div class="container">
       ${header(state,emit)}
       ${articleView(state,emit)}
+      ${footer(state,emit)}
       </div>
     </body>
   `

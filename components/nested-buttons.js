@@ -35,7 +35,7 @@ class ButtonManager extends Nanocomponent {
   createElement (buttons) {
     // this is done *once* because we have return false on update
     this.buttons = buttons.map((button) => new Button)
-    return html`<div style="margin-top:2em;">${this.buttons.map((button,idx) => button.render(buttons[idx]))}</div>`
+    return html`<div>${this.buttons.map((button,idx) => button.render(buttons[idx]))}</div>`
   }
 
   update (newButtons) {
@@ -73,7 +73,9 @@ class ButtonsView extends Nanocomponent {
     this.emit = emit;
     this.buttons = state.buttons;
     return html`<div>
+    <div class="experiment">
     ${bm.render(state.buttons)}
+    </div>
     ${format(snippet)}
     </div>`
   }

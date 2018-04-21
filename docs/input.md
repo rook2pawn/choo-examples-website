@@ -1,3 +1,4 @@
+# simple input example
 
 ```javascript
 var html = require('choo/html')

@@ -17,6 +17,7 @@ function confirmStore(state, emitter) {
 
   emitter.on("cancel", function() {
     state.confirm.button = "waiting";
+    state.submit.field = "";
     emitter.emit("render");
   });
 
@@ -80,7 +81,7 @@ class SubmitView extends Nanocomponent {
   }
   createElement(state,emit) {
     return html`<div>
-      <div>${Submission(state,emit)}</div>
+      <div class="experiment">${Submission(state,emit)}</div>
       <div>${format(snippet)}</div>
     </div>`
   }

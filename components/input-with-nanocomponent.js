@@ -2,7 +2,7 @@ const Nanocomponent = require('nanocomponent')
 const html = require('choo/html')
 const format = require("../format");
 const fs = require("fs")
-const snippet = fs.readFileSync("./docs/input.md", "utf8")
+const snippet = fs.readFileSync("./docs/input-with-nanocomponent.md", "utf8")
 const lib = require("../lib");
 const path = require("path")
 
@@ -13,17 +13,17 @@ class InputView extends Nanocomponent {
     this.emit;
   }
   onInput (e) {
-    this.emit('update', e.target.value)
+    this.emit('update2', e.target.value)
   }
   createElement(state, emit) {
     this.emit = emit;
     return html`
     <div>
       <div class='experiment'>
-      <h1>${state.title}</h1>
+      <h1>${state.title2}</h1>
       <input
         type="text"
-        value="${state.title}"
+        value="${state.title2}"
         oninput=${this.onInput} />
       </div>
       ${format(snippet)}
@@ -31,16 +31,16 @@ class InputView extends Nanocomponent {
     `
   }
   update(state) {
-    let doUpdate = (state.route == (path.join(lib.getBaseRoute(),"input")))
+    let doUpdate = (state.route == (path.join(lib.getBaseRoute(),"input-with-nanocomponent")))
     return doUpdate
   }
 }
 
 const handler = (app) => {
   app.use((state, emitter) => {
-    state.title = "Set the title"
-    emitter.on('update', function (title) {
-      state.title = title;
+    state.title2 = "Set the title"
+    emitter.on('update2', function (title) {
+      state.title2 = title;
       emitter.emit('render')
     })
   })

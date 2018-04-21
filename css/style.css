@@ -11,3 +11,15 @@ code {
 code.hljs {
 	padding:2em;
 }
+
+nav ul li {
+	border-left:thin solid white;
+}
+
+.experiment {
+	padding: 1em;
+	background-color:#a6caa6;
+	margin-top:0.5em;
+	margin-bottom:0.5em;
+
+}

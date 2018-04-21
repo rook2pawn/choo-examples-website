@@ -1,3 +1,8 @@
+# submit confirm
+
+This example gives a great introduction into two components, and two stores, that all talk on the
+same event bus. This is choo.
+
 ```javascript
 var html = require("choo/html");
 var choo = require("choo");

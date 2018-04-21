@@ -1,5 +1,8 @@
 # nanocomponent nested buttons
 
+This is shows you how [nanocomponent](https://github.com/choojs/nanocomponent) allows you to take advantage of the lifecycle methods, such as
+update, as well as how you "instantiate" nanocomponents via render (which in turn calls createElement if its not already created or update to see if it should redo createElement), and lastly, how you nest components, as well as update individual components that are nested. Cool!
+
 ```javascript
 const Nanocomponent = require('nanocomponent')
 const choo = require('choo')

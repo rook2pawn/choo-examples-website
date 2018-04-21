@@ -6,7 +6,7 @@ const header = function(state, emit) {
   <nav>
     <div class="nav-wrapper header">
     <div class="center brand-logo">Choo examples</div>
-      <a href="#" class="brand-logo right"><img src="assets/img/github.png"></a>
+      <a href="https://github.com/rook2pawn/choo-examples" class="brand-logo right"><img src="assets/img/github.png"></a>
     </div>
     <div>
       <ul style="background-color:#71a2cc;" class="left">

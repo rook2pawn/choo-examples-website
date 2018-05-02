@@ -10,7 +10,7 @@ css("./css/style.css")
 
 var app = choo()
 app.use((state,emit) => {
-  state.route = "buttons"
+  state.route = path.join(lib.getBaseRoute(), "buttons")
   emit.on("DOMContentLoaded", () => {
   })
   /*
@@ -35,11 +35,13 @@ app.use((state, emitter) => {                  // 1.
   })
 })
 
-app.route(lib.getBaseRoute(), view)
-app.route(path.join(lib.getBaseRoute(),'buttons'), buttonsView)
-app.route(path.join(lib.getBaseRoute(),'input'), inputView)
-app.route(path.join(lib.getBaseRoute(),'submit'), submitView)
-app.route(path.join(lib.getBaseRoute(),'input-with-nanocomponent'), inputWithNanocomponentView)
+app.route(lib.getBaseRoute(), view.clone())
+app.route(path.join(lib.getBaseRoute(),'buttons'), view.clone())
+app.route(path.join(lib.getBaseRoute(),'input'), view.clone())
+app.route(path.join(lib.getBaseRoute(),'submit'), view.clone())
+app.route(path.join(lib.getBaseRoute(),'input-with-nanocomponent'), view.clone())
+app.route(path.join(lib.getBaseRoute(),'view-markdown'), view.clone())
+
 app.mount('body')
 //<pre><code class="hljs">${raw(hljs.highlight('javascript', foo, true).value)}</code></pre>
 
@@ -49,6 +51,7 @@ const buttonsComponent = require("./components/nested-buttons.js")(app)
 const inputComponent = require("./components/input.js")(app)
 const inputComponentWithNanocomponent = require("./components/input-with-nanocomponent.js")(app)
 const submitComponent = require("./components/submit.js")(app)
+const viewMarkdownComponent = require("./components/viewMarkdownComponent.js")(app)
 
 const articles = {}
 articles[lib.getBase()] = buttonsComponent;
@@ -56,61 +59,19 @@ articles[path.join(lib.getBaseRoute(),'buttons')] = buttonsComponent;
 articles[path.join(lib.getBaseRoute(),'input')] = inputComponent;
 articles[path.join(lib.getBaseRoute(),'input-with-nanocomponent')] = inputComponentWithNanocomponent;
 articles[path.join(lib.getBaseRoute(),'submit')] =  submitComponent;
+articles[path.join(lib.getBaseRoute(),'view-markdown')] =  viewMarkdownComponent;
+
 console.log("Articles are:", articles);
 
 const articleView = function(state,emit) {
   console.log("state route:", state.route)
-  if (state.route == "/")
+  if (state.route == lib.getBase())
     state.route = path.join(lib.getBaseRoute(), "buttons")
   console.log("after state.route:", state.route)
   return html`<div>${articles[state.route].render(state,emit)}`
 }
 function view (state, emit) {
-  return html`
-    <body>
-      <div class="container">
-      ${header(state,emit)}
-      ${articleView(state,emit)}
-      ${footer(state,emit)}
-      </div>
-    </body>
-  `
-}
-function buttonsView (state, emit) {
-  return html`
-    <body>
-      <div class="container">
-      ${header(state,emit)}
-      ${articleView(state,emit)}
-      ${footer(state,emit)}
-      </div>
-    </body>
-  `
-}
-function inputView (state, emit) {
-  return html`
-    <body>
-      <div class="container">
-      ${header(state,emit)}
-      ${articleView(state,emit)}
-      ${footer(state,emit)}
-      </div>
-    </body>
-  `
-}
-function inputWithNanocomponentView (state, emit) {
-  return html`
-    <body>
-      <div class="container">
-      ${header(state,emit)}
-      ${articleView(state,emit)}
-      ${footer(state,emit)}
-      </div>
-    </body>
-  `
-}
-
-function submitView(state, emit) {
+//  console.log("VIew!:", state)
   return html`
     <body>
       <div class="container">

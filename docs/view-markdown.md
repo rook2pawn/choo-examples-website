@@ -1,0 +1,83 @@
+# how to view markdown in choo
+
+```javascript
+class viewMarkdown extends Nanocomponent {
+  constructor() {
+    super()
+    this.onInput = this.onInput.bind(this)
+    this.emit;
+  }
+  onInput (e) {
+    this.emit('updateMarkdown', e.target.value)
+  }
+  createElement(state, emit) {
+    this.emit = emit;
+    return html`
+      <div>
+        <pre><code class='hljs'>
+        ${format(state.markdownText)}
+        </code></pre>
+      </div>
+      <div>
+        <textarea oninput=${this.onInput}'>
+        ${state.markdownText}
+        </textarea>
+      </div>
+    `
+  }
+  update(state) {
+    return true // in practice, make sure this meets some criteria
+  }
+}
+
+app.use((state, emitter) => {
+  emitter.on('updateMarkdown', function(text) {
+    state.markdownText = text;
+    emitter.emit('render')
+  })
+  state.markdownText = `## Header 2`
+})
+
+
+
+var raw = require('choo/html/raw')
+var markdown = require('markdown-it')
+var md = markdown({
+  html: true
+})
+var hljs = require('highlight.js/lib/highlight')
+hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'))
+
+function highlighter (md, opts) {
+  md.options.highlight = highlight
+  var rules = md.renderer.rules
+  rules.fence = wrap(rules.fence)
+  rules.code_block = wrap(rules.code_block)
+
+  function highlight (code, lang) {
+    var result = null
+    if (lang && hljs.getLanguage(lang)) {
+      result = hljs.highlight(lang, code, true)
+    } else {
+      result = hljs.highlightAuto(code)
+    }
+    return result ? result.value : ''
+  }
+
+  function wrap (render) {
+    return function () {
+      return render.apply(this, arguments)
+        .replace(/<code class="/g, '<code class="hljs ')
+        .replace(/<code>/g, '<code class="hljs">')
+    }
+  }
+}
+md.use(highlighter)
+
+
+function format(string) {
+  return raw(md.render(string))
+}
+
+
+```

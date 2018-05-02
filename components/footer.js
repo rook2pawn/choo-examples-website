@@ -7,7 +7,7 @@ const footer = function(state, emit) {
   <div class="container">
     <div class="row">
       <div class="col l6 s12">
-        <h5 class="white-text">Choo Examples by rook2pawn</h5>
+        <h5 class="white-text">Choo Examples by <a href="https://github.com/rook2pawn">rook2pawn</a></h5>
         <p class="grey-text text-lighten-4">Get quick examples.</p>
       </div>
       <div class="col l4 offset-l2 s12">
